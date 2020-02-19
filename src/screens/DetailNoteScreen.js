@@ -3,6 +3,8 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Context } from '../context/noteContext';
 import { Feather } from "@expo/vector-icons";
 import { Text } from 'react-native-elements';
+import { EvilIcons } from '@expo/vector-icons';
+
 
 const DetailNoteScreen = ({ navigation }) => {
     const { state } = useContext(Context);
@@ -17,7 +19,11 @@ const DetailNoteScreen = ({ navigation }) => {
     return (
         <View>
             <View style={styles.cardStyle}>
-                <Text h4>{note.title}</Text>
+                <View style={styles.headerStyle}>
+                    <Text h4>{note.title}</Text>
+                    <EvilIcons name="share-google" style={styles.iconShareStyle} />
+                </View>
+                
                 <Text style={styles.contentStyle}>{note.content}</Text>
             </View>
         </View>
@@ -48,6 +54,13 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         borderRadius: 15,
         elevation: 3
+    },
+    headerStyle:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    iconShareStyle: {
+        fontSize: 38
     },
     contentStyle: {
         marginTop: 20,

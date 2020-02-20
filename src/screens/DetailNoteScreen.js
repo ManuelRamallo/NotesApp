@@ -1,27 +1,33 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Context } from '../context/noteContext';
 import { Feather } from "@expo/vector-icons";
 import { Text } from 'react-native-elements';
 import { EvilIcons } from '@expo/vector-icons';
 
 
+const shareOptions = {
+    message: 'Message to share'
+};
+
+
 const DetailNoteScreen = ({ navigation }) => {
     const { state } = useContext(Context);
 
-    // const note = state.find(
-    //     note => note.id === navigation.getParam("id")
-    // );
-
     const note = navigation.getParam('item');
 
+    shareOptions.message = note.content;
+
+    onSharePress = () => Share.share(shareOptions);
 
     return (
         <View>
             <View style={styles.cardStyle}>
                 <View style={styles.headerStyle}>
                     <Text h4>{note.title}</Text>
-                    <EvilIcons name="share-google" style={styles.iconShareStyle} />
+                    <TouchableOpacity onPress={onSharePress}>
+                        <EvilIcons name="share-google" style={styles.iconShareStyle} />
+                    </TouchableOpacity>
                 </View>
                 
                 <Text style={styles.contentStyle}>{note.content}</Text>

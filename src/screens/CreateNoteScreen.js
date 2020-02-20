@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Switch, AsyncStorage, FlatList, Alert} from 'react-native';
+import { View, StyleSheet, Text, Switch, AsyncStorage, Alert} from 'react-native';
 import { Context } from '../context/noteContext';
 import NoteForm from '../components/noteForm';
 
@@ -8,6 +8,16 @@ const CreateNoteScreen = ({ navigation }) => {
 
     const { createNote } = useContext(Context);
     const [switchValue, setSwitchValue] = useState(false);
+    const [toggleLocalNotes, setToggleLocalNotes] = useState(null);
+
+  
+            
+    AsyncStorage.getItem('toggleLocalNotes').then(value => {
+        if(value !== null){
+            setToggleLocalNotes(JSON.parse(value));
+        }
+    });
+
    
 
 
@@ -72,15 +82,19 @@ const CreateNoteScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.cardStyle}>
-                <View style={styles.toggle}>
-                    <Text style={styles.textToggle}>{switchValue ? 'Guardar en local' : 'Guardar en remoto'}</Text>
-                    <Switch
-                        style={styles.switch}
-                        onValueChange={() => setSwitchValue(!switchValue)} 
-                        value={switchValue}
-                        thumbColor={'#59ADE7'}
-                    />   
-                </View>
+                { toggleLocalNotes ? 
+                    <View style={styles.toggle}>
+                        <Text style={styles.textToggle}>{switchValue ? 'Guardar en local' : 'Guardar en remoto'}</Text>
+                        <Switch
+                            style={styles.switch}
+                            onValueChange={() => setSwitchValue(!switchValue)} 
+                            value={switchValue}
+                            thumbColor={'#59ADE7'}
+                        />   
+                    </View> 
+                    : 
+                    null
+                }
                          
 
                 <NoteForm 

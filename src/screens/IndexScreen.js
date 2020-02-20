@@ -11,7 +11,6 @@ import {
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 import { Context as noteContext } from '../context/noteContext';
 
 
@@ -33,12 +32,6 @@ const IndexScreen = ({ navigation }) => {
 
     }, []);
 
-  clearAsyncStorage = async () => {
-    AsyncStorage.clear().then(() => {
-        console.log('entra en el borrar async storage');
-        navigation.navigate('Index');
-    })
-  };
 
   getGeneralNotes = async () => {
     //  Limpiamos el array cada vez que se actualiza
@@ -50,7 +43,7 @@ const IndexScreen = ({ navigation }) => {
                 setArrayNotes((arrayNotes) => arrayNotes.concat(noteLocal));
             });
       } else {
-        console.log('está vacio el async storage');
+        console.log('WARNING, ASYNC STORAGE VACIO');
       }
     });
 
@@ -94,8 +87,7 @@ const IndexScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Button onPress={() => clearAsyncStorage()} title="Clear Async Storage" />
+    <View style={styles.container}>  
       <FlatList
         data={arrayNotes}
         keyExtractor={(note, index) => note.id.toString()}
@@ -129,12 +121,14 @@ const IndexScreen = ({ navigation }) => {
           );
         }}
       />
+
+      {/* <Button onPress={() => clearAsyncStorage()} title="Clear Async Storage" /> */}
     </View>
   );
 };
 
 IndexScreen.navigationOptions = ({ navigation }) => {
-  return {
+  return { 
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate('Create')}>
         <Feather name="plus" style={styles.iconCreateNote} />

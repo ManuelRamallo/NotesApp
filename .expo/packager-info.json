@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19005,
-  "expoServerPort": 19000,
-  "packagerPort": 19006,
-  "packagerPid": 66711,
-  "expoServerNgrokUrl": "https://z7-q9v.anonymous.notesapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.z7-q9v.anonymous.notesapp.exp.direct",
-  "ngrokPid": 66733
+  "devToolsPort": 19003,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

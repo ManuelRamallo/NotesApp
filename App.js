@@ -74,33 +74,4 @@ export default () => {
 
 
 
-// const navigator = createStackNavigator(
-//   {
-//     Index: IndexScreen,
-//     Detail: DetailNoteScreen,
-//     Create: CreateNoteScreen,
-//     Edit: EditNoteScreen,
-//     Config: ConfigScreen
-//   },
-//   {
-//     initialRouteName: 'Index', 
-//     defaultNavigationOptions: {
-//       title: 'Notes'
-//     }
-//   }
-// );
-
-// const App = createAppContainer(navigator);
-
-
-// export default () => {
-//   return (
-//     <Provider>
-//       <App />
-//     </Provider>
-//   );
-// };
-
-
-
 

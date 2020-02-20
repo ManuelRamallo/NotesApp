@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19003,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 12224,
+  "expoServerNgrokUrl": "https://as-gah.anonymous.notesapp.exp.direct",
+  "packagerNgrokUrl": "https://packager.as-gah.anonymous.notesapp.exp.direct",
+  "ngrokPid": 12242
 }

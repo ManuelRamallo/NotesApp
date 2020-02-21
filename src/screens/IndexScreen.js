@@ -134,6 +134,11 @@ IndexScreen.navigationOptions = ({ navigation }) => {
         <Feather name="plus" style={styles.iconCreateNote} />
       </TouchableOpacity>
     ),
+    headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Feather name="menu" style={styles.iconMenu} />
+        </TouchableOpacity>
+    )
   };
 };
 
@@ -177,5 +182,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#DC5050',
   },
+  iconMenu: {
+    fontSize: 25,
+    marginLeft: 10
+},
 });
 export default IndexScreen;

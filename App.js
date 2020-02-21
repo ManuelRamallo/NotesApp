@@ -12,6 +12,7 @@ import DetailNoteScreen from './src/screens/DetailNoteScreen';
 import CreateNoteScreen from './src/screens/CreateNoteScreen';
 import EditNoteScreen from './src/screens/EditNoteScreen';
 import ConfigScreen from './src/screens/ConfigScreen';
+import MapScreen from './src/screens/MapScreen';
 
 import { Provider } from './src/context/noteContext';
 
@@ -25,7 +26,7 @@ const MainNavigator = createStackNavigator({
   {
     initialRouteName: 'Index',
   }
-)
+);
 
 const ConfigNavigator = createStackNavigator (
   {
@@ -34,11 +35,21 @@ const ConfigNavigator = createStackNavigator (
   {
     initialRouteName: 'Config',
   }
-)
+);
+
+const MapNavigator = createStackNavigator (
+  {
+    Map: MapScreen
+  },
+  {
+    initialRouteName: 'Map',
+  }
+);
 
 const Drawer = {
-  Index: MainNavigator,
-  Config: ConfigNavigator,
+  'Inicio': MainNavigator,
+  'Configuración': ConfigNavigator,
+  'Donde estoy': MapNavigator
 };
 
 const Index = createDrawerNavigator(
@@ -46,7 +57,7 @@ const Index = createDrawerNavigator(
     ...Drawer
   },
   {
-    initialRouteName: 'Index'
+    initialRouteName: 'Inicio'
   }
 
 )

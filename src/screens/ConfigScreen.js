@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Switch, TouchableOpacity, Button, AsyncStorage, Alert } from 'react-native';
+import { 
+  Text, 
+  View, 
+  StyleSheet, 
+  Switch, 
+  TouchableOpacity, 
+  AsyncStorage, 
+  Alert 
+} from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 const ConfigScreen = ({ navigation }) => {
-
 
     const [toggleLocalNotes, setToggleLocalNotes] = useState(null);
 
@@ -62,6 +70,17 @@ const ConfigScreen = ({ navigation }) => {
     );
 }
 
+ConfigScreen.navigationOptions = ({ navigation }) => {
+  return {
+    title: 'Configuracion',
+    headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Feather name="menu" style={styles.iconMenu} />
+        </TouchableOpacity>
+    )
+  };
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
@@ -105,7 +124,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18
-  }
+  },
+  iconMenu: {
+      fontSize: 25,
+      marginLeft: 10
+  },
 });
 
 export default ConfigScreen;

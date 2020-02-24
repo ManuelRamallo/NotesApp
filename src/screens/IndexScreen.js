@@ -20,7 +20,6 @@ const IndexScreen = ({ navigation }) => {
 
     useEffect(() => {
       getNotes();
-      getGeneralNotes();
 
         const listener = navigation.addListener('didFocus', () => {
             getNotes();

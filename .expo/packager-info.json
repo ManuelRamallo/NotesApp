@@ -1,9 +1,9 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 12188,
-  "expoServerNgrokUrl": "https://b4-575.anonymous.notesapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.b4-575.anonymous.notesapp.exp.direct",
-  "ngrokPid": 12206
+  "packagerPid": 26027,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

@@ -20,6 +20,7 @@ const IndexScreen = ({ navigation }) => {
 
     useEffect(() => {
       getNotes();
+      getGeneralNotes();
 
         const listener = navigation.addListener('didFocus', () => {
             getNotes();
@@ -48,7 +49,6 @@ const IndexScreen = ({ navigation }) => {
     });
 
     // ESTO SON LAS NOTAS REMOTAS
-
       state.forEach(noteRemote => {
           setArrayNotes((arrayNotes) => arrayNotes.concat(noteRemote));
       });

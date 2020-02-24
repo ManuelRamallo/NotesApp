@@ -15,6 +15,7 @@ import ConfigScreen from './src/screens/ConfigScreen';
 import MapScreen from './src/screens/MapScreen';
 
 import { Provider } from './src/context/noteContext';
+import NextMatchesScreen from './src/screens/NextMatchesScreen';
 
 
 const MainNavigator = createStackNavigator({
@@ -46,10 +47,20 @@ const MapNavigator = createStackNavigator (
   }
 );
 
+const NextMatchesNavigator = createStackNavigator (
+  {
+    NextMatches: NextMatchesScreen
+  },
+  {
+    initialRouteName: 'NextMatches',
+  }
+);
+
 const Drawer = {
   'Inicio': MainNavigator,
   'Configuración': ConfigNavigator,
-  'Donde estoy': MapNavigator
+  'Donde estoy': MapNavigator,
+  'Buscar prox partidos': NextMatchesNavigator
 };
 
 const Index = createDrawerNavigator(

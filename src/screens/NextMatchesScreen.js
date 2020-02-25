@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, FlatList, Picker } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import footballApi from '../api/footballApi';
+import EmptyState from '../components/emptyState';
 
 const NextMatchesScreen = ({ navigation }) => {
     const [arrayTeams, setArrayTeams] = useState([]);
@@ -24,7 +25,6 @@ const NextMatchesScreen = ({ navigation }) => {
             }
         });
 
-        // console.log('array teams', arrayTeams);
     }
 
     const getNextMatchesTeam = async (idTeam) => {
@@ -44,11 +44,9 @@ const NextMatchesScreen = ({ navigation }) => {
 
     useEffect(() => {
         getTeams();
-        // getNextMatchesTeam();
 
         const listener = navigation.addListener('didFocus', () => {
             getTeams();
-            // getNextMatchesTeam();
         });
 
         return () => {
@@ -60,7 +58,7 @@ const NextMatchesScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.cardStyle}>
-                <View> 
+                <View style={{height: '100%'}}> 
                     <Picker
                         selectedValue={currencyTeam}
                         onValueChange={currency => {
@@ -74,8 +72,9 @@ const NextMatchesScreen = ({ navigation }) => {
                         }} 
                         mode="dropdown"
                     >
-                        { arrayTeams.map((item, key)=>(
-                            <Picker.Item label={item.name} value={item.id} key={key} />)
+                        { arrayTeams.map((item, key)=>  (
+                            <Picker.Item label={item.name} value={item.id} key={key} />
+                            )
                         )}
                     </Picker>
 
@@ -86,15 +85,27 @@ const NextMatchesScreen = ({ navigation }) => {
                             keyExtractor={(team, index) => team.id.toString()}
                             renderItem={({ item }) => {
                                 return(
-                                    <Text>
-                                        {item.awayTeam.id !== currencyTeam ? item.awayTeam.name : item.homeTeam.name}
-                                    </Text>
+                                    <View>
+                                        <Text style={styles.textMatch}>
+                                            {item.awayTeam.id !== currencyTeam ? item.awayTeam.name : item.homeTeam.name}
+                                        </Text>
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <Text>
+                                                {item.competition.name} 
+                                            </Text>
+                                            <Text>
+                                                {item.utcDate}
+                                            </Text>
+                                        </View>
+                                        
+                                        <View style={styles.lineSeparatorList} />
+                                    </View>
                                 )
                             }}
                         />
                     } 
 
-                    {arrayNextMatches.length === 0 && <Text style={styles.emptyState}>Choose a team...</Text>}
+                    {arrayNextMatches.length === 0 && <EmptyState/>}
 
                 </View>
                 
@@ -142,8 +153,19 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         width: '95%',
         marginTop: 3,
-        marginBottom: 15
-      },
+        marginBottom: 30
+    },
+    lineSeparatorList: {
+        borderBottomColor: '#DFDFDF',
+        borderBottomWidth: 1,
+        width: '100%',
+        marginTop: 3,
+        marginBottom: 20
+    },
+    textMatch: {
+        fontWeight: 'bold',
+        fontSize: 16
+    }
 });
 
 export default NextMatchesScreen;

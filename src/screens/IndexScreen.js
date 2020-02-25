@@ -12,6 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Context as noteContext } from '../context/noteContext';
+import EmptyState from '../components/emptyState';
 
 
 const IndexScreen = ({ navigation }) => {
@@ -87,7 +88,7 @@ const IndexScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>  
-      <FlatList
+      { arrayNotes && <FlatList
         data={arrayNotes}
         keyExtractor={(note, index) => note.id.toString()}
         renderItem={({ item }) => {
@@ -120,8 +121,9 @@ const IndexScreen = ({ navigation }) => {
           );
         }}
       />
+      }
+      {arrayNotes.length === 0 && <EmptyState/>}
 
-      {/* <Button onPress={() => clearAsyncStorage()} title="Clear Async Storage" /> */}
     </View>
   );
 };

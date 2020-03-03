@@ -1,8 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, Picker, ActivityIndicator } from 'react-native';
+import { View, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    Picker, 
+    ActivityIndicator, 
+    Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import footballApi from '../api/footballApi';
 import EmptyState from '../components/emptyState';
+import moment from 'moment';
+
 
 const NextMatchesScreen = ({ navigation }) => {
     const [arrayTeams, setArrayTeams] = useState([]);
@@ -16,15 +25,18 @@ const NextMatchesScreen = ({ navigation }) => {
         setArrayTeams(() => arrayTeams.splice());
         setArrayTeams((arrayTeams) => arrayTeams.concat({id: -1, name: 'Selecciona un equipo'}));
 
-        await footballApi.get('/competitions/2014/teams').then( value => {
-            if(value){
-                value.data.teams.forEach(team => {
-                    setArrayTeams((arrayTeams) => arrayTeams.concat(team));
-                });
-            } else {
-                console.log('WARNING, VALUE VACIO');
-            }
-        });
+        try {
+            await footballApi.get('/competitions/2014/teams').then( value => {
+                if(value){
+                    value.data.teams.forEach(team => {
+                        setArrayTeams((arrayTeams) => arrayTeams.concat(team));
+                    });
+                }
+            }); 
+        } catch (error) {
+            Alert.alert('ERROR', error.message);
+        }
+
 
     }
 
@@ -32,17 +44,19 @@ const NextMatchesScreen = ({ navigation }) => {
 
         setArrayNextMatches(() => arrayNextMatches.splice());
         setLoading(true);
-
-        await footballApi.get(`teams/${idTeam}/matches?status=SCHEDULED`).then( value => {
-            if(value){
-                value.data.matches.forEach(nextMatch => {
-                    setArrayNextMatches((arrayNextMatches) => arrayNextMatches.concat(nextMatch));
-                });
-                setLoading(false);
-            } else {
-                console.log('WARNING, VALUE VACIO');
-            }
-        });
+        
+        try {
+            await footballApi.get(`teams/${idTeam}/matches?status=SCHEDULED`).then( value => {
+                if(value){
+                    value.data.matches.forEach(nextMatch => {
+                        setArrayNextMatches((arrayNextMatches) => arrayNextMatches.concat(nextMatch));
+                    });
+                    setLoading(false);
+                }
+            });
+        } catch (error) {
+            Alert.alert('ERROR', error.message);
+        }
     }
 
     useEffect(() => {
@@ -99,7 +113,7 @@ const NextMatchesScreen = ({ navigation }) => {
                                                 {item.competition.name} 
                                             </Text>
                                             <Text>
-                                                {item.utcDate}
+                                                {moment(item.utcDate).format('l')}
                                             </Text>
                                         </View>
                                         

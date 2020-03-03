@@ -40,21 +40,27 @@ const IndexScreen = ({ navigation }) => {
     setArrayNotes(() => arrayNotes.splice());
     setLoading(true);
 
-    await AsyncStorage.getItem('localNotesData').then(value => {
-        if (value !== null) {
-            JSON.parse(value).forEach(noteLocal => {
-                setArrayNotes((arrayNotes) => arrayNotes.concat(noteLocal));
-            });
-            setLoading(false);
-      } else {
-        console.log('WARNING, ASYNC STORAGE VACIO');
-      }
-    });
+    try {
+      await AsyncStorage.getItem('localNotesData').then(value => {
+          if (value !== null) {
+              JSON.parse(value).forEach(noteLocal => {
+                  setArrayNotes((arrayNotes) => arrayNotes.concat(noteLocal));
+              });
+              setLoading(false);
+        } 
+      });
+    } catch (error) {
+        Alert.alert('ERROR', error.message);
+    }
 
     // ESTO SON LAS NOTAS REMOTAS
+    try {
       state.forEach(noteRemote => {
           setArrayNotes((arrayNotes) => arrayNotes.concat(noteRemote));
       });
+    } catch (error) {
+        Alert.alert('ERROR', error.message);
+    }
   };
 
   deleteLocalNote = async (id) => {
@@ -85,7 +91,7 @@ const IndexScreen = ({ navigation }) => {
 
 
       } catch (error) {
-          console.log('ERROR', error);
+          Alert.alert('ERROR', error.message);
       }
   }
 

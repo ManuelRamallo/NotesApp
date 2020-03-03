@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, Picker } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, Picker, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import footballApi from '../api/footballApi';
 import EmptyState from '../components/emptyState';
@@ -7,6 +7,7 @@ import EmptyState from '../components/emptyState';
 const NextMatchesScreen = ({ navigation }) => {
     const [arrayTeams, setArrayTeams] = useState([]);
     const [arrayNextMatches, setArrayNextMatches] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [currencyTeam, setCurrencyTeam] = useState(-1);
 
@@ -30,12 +31,14 @@ const NextMatchesScreen = ({ navigation }) => {
     const getNextMatchesTeam = async (idTeam) => {
 
         setArrayNextMatches(() => arrayNextMatches.splice());
+        setLoading(true);
 
         await footballApi.get(`teams/${idTeam}/matches?status=SCHEDULED`).then( value => {
             if(value){
                 value.data.matches.forEach(nextMatch => {
                     setArrayNextMatches((arrayNextMatches) => arrayNextMatches.concat(nextMatch));
                 });
+                setLoading(false);
             } else {
                 console.log('WARNING, VALUE VACIO');
             }
@@ -80,7 +83,9 @@ const NextMatchesScreen = ({ navigation }) => {
 
                     <View style={styles.lineSeparator} />
 
-                    { arrayNextMatches && <FlatList 
+                    { loading && <ActivityIndicator size="large" color="#59ADE7" style={styles.loader} /> }
+
+                    { !loading && arrayNextMatches && <FlatList 
                             data={arrayNextMatches}
                             keyExtractor={(team, index) => team.id.toString()}
                             renderItem={({ item }) => {
@@ -105,7 +110,7 @@ const NextMatchesScreen = ({ navigation }) => {
                         />
                     } 
 
-                    {arrayNextMatches.length === 0 && <EmptyState/>}
+                    { !loading && arrayNextMatches.length === 0 && <EmptyState/>}
 
                 </View>
                 
@@ -165,7 +170,10 @@ const styles = StyleSheet.create({
     textMatch: {
         fontWeight: 'bold',
         fontSize: 16
-    }
+    },
+    loader: {
+        flex: 1
+    },
 });
 
 export default NextMatchesScreen;

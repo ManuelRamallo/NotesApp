@@ -1,12 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, Picker } from 'react-native';
+import { View, 
+    StyleSheet, 
+    Text, 
+    TouchableOpacity, 
+    FlatList, 
+    Picker, 
+    ActivityIndicator, 
+    Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import footballApi from '../api/footballApi';
 import EmptyState from '../components/emptyState';
+import moment from 'moment';
+
 
 const NextMatchesScreen = ({ navigation }) => {
     const [arrayTeams, setArrayTeams] = useState([]);
     const [arrayNextMatches, setArrayNextMatches] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [currencyTeam, setCurrencyTeam] = useState(-1);
 
@@ -15,31 +25,38 @@ const NextMatchesScreen = ({ navigation }) => {
         setArrayTeams(() => arrayTeams.splice());
         setArrayTeams((arrayTeams) => arrayTeams.concat({id: -1, name: 'Selecciona un equipo'}));
 
-        await footballApi.get('/competitions/2014/teams').then( value => {
-            if(value){
-                value.data.teams.forEach(team => {
-                    setArrayTeams((arrayTeams) => arrayTeams.concat(team));
-                });
-            } else {
-                console.log('WARNING, VALUE VACIO');
-            }
-        });
+        try {
+            await footballApi.get('/competitions/2014/teams').then( value => {
+                if(value){
+                    value.data.teams.forEach(team => {
+                        setArrayTeams((arrayTeams) => arrayTeams.concat(team));
+                    });
+                }
+            }); 
+        } catch (error) {
+            Alert.alert('ERROR', error.message);
+        }
+
 
     }
 
     const getNextMatchesTeam = async (idTeam) => {
 
         setArrayNextMatches(() => arrayNextMatches.splice());
-
-        await footballApi.get(`teams/${idTeam}/matches?status=SCHEDULED`).then( value => {
-            if(value){
-                value.data.matches.forEach(nextMatch => {
-                    setArrayNextMatches((arrayNextMatches) => arrayNextMatches.concat(nextMatch));
-                });
-            } else {
-                console.log('WARNING, VALUE VACIO');
-            }
-        });
+        setLoading(true);
+        
+        try {
+            await footballApi.get(`teams/${idTeam}/matches?status=SCHEDULED`).then( value => {
+                if(value){
+                    value.data.matches.forEach(nextMatch => {
+                        setArrayNextMatches((arrayNextMatches) => arrayNextMatches.concat(nextMatch));
+                    });
+                    setLoading(false);
+                }
+            });
+        } catch (error) {
+            Alert.alert('ERROR', error.message);
+        }
     }
 
     useEffect(() => {
@@ -80,7 +97,9 @@ const NextMatchesScreen = ({ navigation }) => {
 
                     <View style={styles.lineSeparator} />
 
-                    { arrayNextMatches && <FlatList 
+                    { loading && <ActivityIndicator size="large" color="#59ADE7" style={styles.loader} /> }
+
+                    { !loading && arrayNextMatches && <FlatList 
                             data={arrayNextMatches}
                             keyExtractor={(team, index) => team.id.toString()}
                             renderItem={({ item }) => {
@@ -94,7 +113,7 @@ const NextMatchesScreen = ({ navigation }) => {
                                                 {item.competition.name} 
                                             </Text>
                                             <Text>
-                                                {item.utcDate}
+                                                {moment(item.utcDate).format('l')}
                                             </Text>
                                         </View>
                                         
@@ -105,7 +124,7 @@ const NextMatchesScreen = ({ navigation }) => {
                         />
                     } 
 
-                    {arrayNextMatches.length === 0 && <EmptyState/>}
+                    { !loading && arrayNextMatches.length === 0 && <EmptyState/>}
 
                 </View>
                 
@@ -165,7 +184,10 @@ const styles = StyleSheet.create({
     textMatch: {
         fontWeight: 'bold',
         fontSize: 16
-    }
+    },
+    loader: {
+        flex: 1
+    },
 });
 
 export default NextMatchesScreen;

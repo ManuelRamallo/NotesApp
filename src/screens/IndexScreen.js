@@ -6,7 +6,7 @@ import {
   FlatList,
   Text,
   AsyncStorage,
-  Button,
+  ActivityIndicator
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
@@ -18,6 +18,7 @@ import EmptyState from '../components/emptyState';
 const IndexScreen = ({ navigation }) => {
     const { state, getNotes, deleteNote } = useContext(noteContext);
     const [arrayNotes, setArrayNotes] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
       getNotes();
@@ -37,21 +38,29 @@ const IndexScreen = ({ navigation }) => {
   getGeneralNotes = async () => {
     //  Limpiamos el array cada vez que se actualiza
     setArrayNotes(() => arrayNotes.splice());
+    setLoading(true);
 
-    await AsyncStorage.getItem('localNotesData').then(value => {
-        if (value !== null) {
-            JSON.parse(value).forEach(noteLocal => {
-                setArrayNotes((arrayNotes) => arrayNotes.concat(noteLocal));
-            });
-      } else {
-        console.log('WARNING, ASYNC STORAGE VACIO');
-      }
-    });
+    try {
+      await AsyncStorage.getItem('localNotesData').then(value => {
+          if (value !== null) {
+              JSON.parse(value).forEach(noteLocal => {
+                  setArrayNotes((arrayNotes) => arrayNotes.concat(noteLocal));
+              });
+              setLoading(false);
+        } 
+      });
+    } catch (error) {
+        Alert.alert('ERROR', error.message);
+    }
 
     // ESTO SON LAS NOTAS REMOTAS
+    try {
       state.forEach(noteRemote => {
           setArrayNotes((arrayNotes) => arrayNotes.concat(noteRemote));
       });
+    } catch (error) {
+        Alert.alert('ERROR', error.message);
+    }
   };
 
   deleteLocalNote = async (id) => {
@@ -82,13 +91,15 @@ const IndexScreen = ({ navigation }) => {
 
 
       } catch (error) {
-          console.log('ERROR', error);
+          Alert.alert('ERROR', error.message);
       }
   }
 
   return (
     <View style={styles.container}>  
-      { arrayNotes && <FlatList
+
+      { loading && <ActivityIndicator size="large" color="#59ADE7" style={styles.loader} /> }
+      { !loading && arrayNotes && <FlatList
         data={arrayNotes}
         keyExtractor={(note, index) => note.id.toString()}
         renderItem={({ item }) => {
@@ -122,7 +133,7 @@ const IndexScreen = ({ navigation }) => {
         }}
       />
       }
-      {arrayNotes.length === 0 && <EmptyState/>}
+      { !loading && arrayNotes.length === 0 && <EmptyState/>}
 
     </View>
   );
@@ -186,6 +197,9 @@ const styles = StyleSheet.create({
   iconMenu: {
     fontSize: 25,
     marginLeft: 10
-},
+  },
+  loader: {
+    flex: 1
+  },
 });
 export default IndexScreen;

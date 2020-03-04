@@ -104,21 +104,23 @@ const NextMatchesScreen = ({ navigation }) => {
                             keyExtractor={(team, index) => team.id.toString()}
                             renderItem={({ item }) => {
                                 return(
-                                    <View>
-                                        <Text style={styles.textMatch}>
-                                            {item.awayTeam.id !== currencyTeam ? item.awayTeam.name : item.homeTeam.name}
-                                        </Text>
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                            <Text>
-                                                {item.competition.name} 
+                                    <TouchableOpacity onPress={() => navigation.navigate('MatchesDay', { 'competition': item.competition })}>
+                                        <View>
+                                            <Text style={styles.textMatch}>
+                                                {item.awayTeam.id !== currencyTeam ? item.awayTeam.name : item.homeTeam.name}
                                             </Text>
-                                            <Text>
-                                                {moment(item.utcDate).format('l')}
-                                            </Text>
+                                            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                                <Text>
+                                                    {item.competition.name} 
+                                                </Text>
+                                                <Text>
+                                                    {moment(item.utcDate).format('DD/MM/YYYY')}
+                                                </Text>
+                                            </View>
+                                            
+                                            <View style={styles.lineSeparatorList} />
                                         </View>
-                                        
-                                        <View style={styles.lineSeparatorList} />
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             }}
                         />

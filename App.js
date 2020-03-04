@@ -16,6 +16,8 @@ import MapScreen from './src/screens/MapScreen';
 
 import { Provider } from './src/context/noteContext';
 import NextMatchesScreen from './src/screens/NextMatchesScreen';
+import MatchesOfTheDayScreen from './src/screens/MatchesOfTheDayScreen';
+
 
 
 const MainNavigator = createStackNavigator({
@@ -49,7 +51,8 @@ const MapNavigator = createStackNavigator (
 
 const NextMatchesNavigator = createStackNavigator (
   {
-    NextMatches: NextMatchesScreen
+    NextMatches: NextMatchesScreen,
+    MatchesDay: MatchesOfTheDayScreen
   },
   {
     initialRouteName: 'NextMatches',

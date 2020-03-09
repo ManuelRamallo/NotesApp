@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 8635,
-  "expoServerNgrokUrl": "https://5c-9ns.mramallo.notesapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.5c-9ns.mramallo.notesapp.exp.direct",
-  "ngrokPid": 8654
+  "packagerPid": 8901,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

@@ -54,15 +54,19 @@ const IndexScreen = ({ navigation }) => {
       });
     } catch (error) {
         Alert.alert('ERROR', error.message);
+        setLoading(false);
     }
 
     // ESTO SON LAS NOTAS REMOTAS
     try {
-      state.forEach(noteRemote => {
+      await state.forEach(noteRemote => {
           setArrayNotes((arrayNotes) => arrayNotes.concat(noteRemote));
+          setLoading(false);
       });
     } catch (error) {
         Alert.alert('ERROR', error.message);
+        console.log('ERROR', error);
+        setLoading(false);
     }
   };
 
@@ -95,6 +99,7 @@ const IndexScreen = ({ navigation }) => {
 
       } catch (error) {
           Alert.alert('ERROR', error.message);
+          setLoading(false);
       }
   }
 

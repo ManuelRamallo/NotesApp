@@ -6,7 +6,9 @@ import {
   FlatList,
   Text,
   AsyncStorage,
-  ActivityIndicator
+  ActivityIndicator,
+  Button,
+  Vibration
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
@@ -14,20 +16,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Context as noteContext } from '../context/noteContext';
 import EmptyState from '../components/emptyState';
 
-import { Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
-
-const registerForPushNotifications = async () => {
-    const status = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-
-    if (status !== 'granted'){
-      alert('No notifications permissions!');
-      // return;
-    }
-
-    const token = await Notifications.getExpoPushTokenAsync();
-    console.log('TOKEN', token);
-}
 
 
 const IndexScreen = ({ navigation }) => {
@@ -35,19 +23,13 @@ const IndexScreen = ({ navigation }) => {
     const [arrayNotes, setArrayNotes] = useState([]);
     const [loading, setLoading] = useState(false);
     
-    const [notifications, setNotifications] = useState({});
 
     useEffect(() => {
         getNotes();
-        registerForPushNotifications();
-
-        Notifications.addListener('_handleNotification');
 
         const listener = navigation.addListener('didFocus', () => {
             getNotes();
             getGeneralNotes();
-            registerForPushNotifications();
-
         });
 
         return () => {
@@ -55,10 +37,6 @@ const IndexScreen = ({ navigation }) => {
         };
 
     }, []);
-
-    _handleNotification = notification => {
-      setNotifications(notification);
-    };
 
 
   getGeneralNotes = async () => {
@@ -124,8 +102,6 @@ const IndexScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>  
     
-        <Text>Origin: {notifications.origin}</Text>
-        <Text>Data: {JSON.stringify(notifications.data)}</Text>
       { loading && <ActivityIndicator size="large" color="#59ADE7" style={styles.loader} /> }
       { !loading && arrayNotes && <FlatList
         data={arrayNotes}

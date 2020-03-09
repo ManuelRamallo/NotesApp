@@ -17,6 +17,7 @@ import MapScreen from './src/screens/MapScreen';
 import { Provider } from './src/context/noteContext';
 import NextMatchesScreen from './src/screens/NextMatchesScreen';
 import MatchesOfTheDayScreen from './src/screens/MatchesOfTheDayScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
 
 
 
@@ -59,11 +60,21 @@ const NextMatchesNavigator = createStackNavigator (
   }
 );
 
+const NotificationsNavigator = createStackNavigator (
+  {
+    Notifications: NotificationsScreen,
+  },
+  {
+    initialRouteName: 'Notifications',
+  }
+);
+
 const Drawer = {
   'Inicio': MainNavigator,
   'Configuración': ConfigNavigator,
   'Donde estoy': MapNavigator,
-  'Buscar prox partidos': NextMatchesNavigator
+  'Buscar prox partidos': NextMatchesNavigator,
+  'Notificaciones': NotificationsNavigator
 };
 
 const Index = createDrawerNavigator(

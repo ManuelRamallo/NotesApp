@@ -7,8 +7,7 @@ import {
   Text,
   AsyncStorage,
   ActivityIndicator,
-  Button,
-  Vibration
+  Alert
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons'
